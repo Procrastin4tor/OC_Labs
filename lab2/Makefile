@@ -1,4 +1,4 @@
 all:
 	g++ hello.cpp -o hello
-	./lab2
+	./script_lab2
     
