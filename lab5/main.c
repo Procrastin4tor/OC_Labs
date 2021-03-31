@@ -101,7 +101,7 @@ int main(int argv, char* argc[])
     {
         close(fdPipe[0]);
 
-        if((fdFifo = open(name, O_WRONLY))<0)
+        if((fdFifo = open(name, O_RDONLY))<0)
         {
             printf("Can`t open F for writing\n");
             exit(-1);
@@ -130,6 +130,6 @@ int main(int argv, char* argc[])
     char delete_fifo_file[124];
 	sprintf(delete_fifo_file, "rm %s", name);
 	system(delete_fifo_file);
-
+    
     free(arr);
 }
