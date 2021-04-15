@@ -53,16 +53,23 @@ void* pthreadFunc(void* args)
 
 	ssize_t len = msgrcv(msgId, &pthreadMsg, sizeof(pthreadMsg), 0, 0);
 
+	if(len < 0)
+	{
+		perror("Error with msgget()!\n");
+        exit(0);
+	}
+
 	int arr[4];
 	for(int i = 0; i<4; i++)
 		arr[i] = pthreadMsg.data[i];
 	
 	while (NextSet(pthreadMsg.data, 4))
+	{
 		for(int i = 0; i<4; i++)
-			pthreadMsg.data[i] == arr[i];
-        msgsnd(msgId, &pthreadMsg, sizeof(pthreadMsg), 0);
-
-	return 0;
+					pthreadMsg.data[i] == arr[i];
+				msgsnd(msgId, &pthreadMsg, sizeof(pthreadMsg), 0);
+	}
+		return 0;
 }
 
 int main(void)
