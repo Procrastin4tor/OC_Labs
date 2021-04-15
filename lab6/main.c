@@ -57,10 +57,11 @@ void semaphoreSetState(int semId, int num, int state)
 
 char semaphore_lock(int semId, int num, char* arrayCheck)
 {
-	char isLock = arrayCheck[num];
+	if(arrayCheck[num])
+        return 1;
 	semaphoreSetState(semId, num, SEMAPHORE_LOCK);
 	arrayCheck[num] = 1;
-	return isLock;
+	return 0;
 }
 
 void semaphore_unlock(int semId, int num, char* arrayCheck)
@@ -99,13 +100,13 @@ void parentMainCode(int* array, char* arrayCheck, int size, int semId, pid_t chi
     int iteration = 0;
 	while (!waitpid(child, NULL, WNOHANG))
 	{
-		printf("Iteration %i\n", iteration);
+		printf("\nIteration %i\n\n", iteration);
 		for (int i = 0; i < size; i++)
 		{
 			if (semaphore_lock(semId, i, arrayCheck))
-				printf("@[%d] ", array[i]);
+				printf("Bloke\t");
 			else
-				printf("%d ", array[i]);
+				printf("%d\t", array[i]);
 			semaphore_unlock(semId, i, arrayCheck);
 		}
 		printf("\n");
